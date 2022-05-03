@@ -1,0 +1,47 @@
+name: Dodatek 1
+
+on:
+  push:
+    branches: [main]
+
+jobs:
+  build-push-images:
+    name: Budowanie obrazów i przesyłanie ich na Docker Hub
+    runs-on: ubuntu-latest
+
+    steps:
+
+      # Akcja sprawdzająca kod
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      # Akcja instalująca i konfigurująca QEMU
+      - name: Setup QEMU
+        id: qemu
+        uses: docker/setup-qemu-action@v1
+
+      # Akcja instalująca i konfigurująca Buildx
+      - name: Buildx set-up
+        id: buildx
+        uses: docker/setup-buildx-action@v1
+
+      # Logowanie na GitHub Container Registry za pomocą nazwy użytkownika znajdującej się w zmiennej actor pobranej z kontekstu github oraz Personal Access Token znajdującego się w repozytorium jako tzw. sekret
+      - name: Login to GitHub Container Registryy
+        uses: docker/login-action@v1 
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GHCR_ACCESS_TOKEN}}
+
+      # Budowanie i publikacja gotowych obrazów na GitHub Container Registry - repozytorium zad1dod1, tag serwer, platformy amd64, armv7 i arm64, eksport cache
+      - name: Build and push
+        id: docker_build
+        uses: docker/build-push-action@v2
+        with:
+          context: ./
+          platforms: linux/arm/v7,linux/arm64/v8,linux/amd64
+          file: ./Dockerfile
+          push: true
+          tags: ghcr.io/gvbriel/zad1:dod1
+          cache-from: type=registry,ref=ghcr.io/gvbriel/zad1:dod1
+          cache-to: type=inline
