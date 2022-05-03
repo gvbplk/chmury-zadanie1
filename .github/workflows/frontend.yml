@@ -42,6 +42,6 @@ jobs:
           platforms: linux/arm/v7,linux/arm64/v8,linux/amd64
           file: ./Dockerfile
           push: true
-          tags: ghcr.io/gvbriel/zad1:dod1
-          cache-from: type=registry,ref=ghcr.io/gvbriel/zad1:dod1
+          tags: ghcr.io/gvbriel/gp_zadanie1:d1
+          cache-from: type=registry,ref=ghcr.io/gvbriel/gp_zadanie1:d1
           cache-to: type=inline
