@@ -43,5 +43,3 @@ jobs:
           file: ./Dockerfile
           push: true
           tags: ghcr.io/gvbriel/gp_zadanie1:server
-          cache-from: type=registry,ref=ghcr.io/gvbriel/gp_zadanie1:server
-          cache-to: type=inline
