@@ -24,6 +24,13 @@ jobs:
       - name: Buildx set-up
         id: buildx
         uses: docker/setup-buildx-action@v1
+        
+      - name: Login to DockerHub
+        uses: docker/login-action@v1 
+        with:
+          username: ${{ secrets.DOCKERHUB_LOGIN }}
+          password: ${{ secrets.DOCKERHUB_PASSWORD }}
+
 
       # Logowanie na GitHub Container Registry za pomocą nazwy użytkownika znajdującej się w zmiennej actor pobranej z kontekstu github oraz Personal Access Token znajdującego się w repozytorium jako tzw. sekret
       - name: Login to GitHub Container Registryy
@@ -43,3 +50,5 @@ jobs:
           file: ./Dockerfile
           push: true
           tags: ghcr.io/gvbriel/gp_zadanie1:server
+          cache-from: type=registry,ref=ghcr.io/gvbriel/gp_zadanie1:server
+          cache-to: type=inline
